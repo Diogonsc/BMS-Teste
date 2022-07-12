@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tela de Cadastro </title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
+      crossorigin="anonymous"
+    />
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+  />
+  </head>
+  <body>
+    <header>
+      <h1 class="text-center pt-2">Cadastro de Clientes</h1>
+      <div
+        id="alerta"
+        class="d-none mx-5 alert alert-success alert-dismissible animate__animated animate__fadeInRightBig"
+        style="
+        width: 40%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        "
+        role="alert"
+      >
+        <strong>Cliente criado com Sucesso!</strong>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="alert"
+          aria-label="Close"
+        ></button>
+      </div>
+    </header>
+
+    <main class="mx-5 my-5 bg-light border">
+      <form id="form" class="p-2 row">
+        <div class="mb-3 col-12">
+          <label for="nome" class="form-label">Nome Completo</label>
+          <input type="text" class="form-control" id="nome" required />
+          <input type="hidden" id="id" />
+        </div>
+        <div class="mb-3 col-12">
+          <label for="email" class="form-label">Email</label>
+          <input
+            type="email"
+            class="form-control"
+            id="email"
+            placeholder="nome@nome.com"
+            required
+            aria-describedby="emailHelp"
+          />
+        </div>
+        <div class="mb-3 col-6">
+          <label for="endereco" class="form-label">Endereço</label>
+          <input type="text" class="form-control" id="endereco" required />
+        </div>
+        <div class="mb-3 col-6">
+          <label for="bairro" class="form-label">Bairro</label>
+          <input type="text" class="form-control" id="bairro" required />
+        </div>
+        <div class="mb-3 col-6">
+          <label for="cidade" class="form-label">Cidade</label>
+          <input type="text" class="form-control" id="cidade" required />
+        </div>
+        <div class="mb-3 col-4">
+          <label for="cep" class="form-label">CEP</label>
+          <input
+            type="text"
+            class="form-control"
+            id="cep"
+            onkeypress="$(this).mask('00000-000')"
+            required
+          />
+        </div>
+        <div class="mb-3 col-2">
+          <label for="uf" class="form-label">UF</label>
+          <input type="text" class="form-control" id="uf" required />
+        </div>
+        <div class="mb-3 col-4">
+          <label for="telefoneResidencial" class="form-label"
+            >Telefone Residêncial</label
+          >
+          <input
+            type="text"
+            class="form-control mask-telefone"
+            id="telefoneResidencial"
+            placeholder="(99) 9999-9999"
+            required
+            data-mask="(00) 0000-0000"
+            data-mask-selectonfocus="true"
+          />
+        </div>
+        <div class="mb-3 col-4">
+          <label for="telefoneCelular" class="form-label"
+            >Telefone Celular</label
+          >
+          <input
+            type="text"
+            class="form-control mask-telefone"
+            id="telefoneCelular"
+            placeholder="(99) 99999-9999"
+            required
+            data-mask="(00) 00000-0000"
+            data-mask-selectonfocus="true"
+          />
+        </div>
+      </form>
+      <button
+        type="submit"
+        id="salvar"
+        class="btn btn-primary mx-2 my-2 bt-alert"
+        onclick="mostraAlerta()"
+      >
+        SALVAR
+      </button>
+    </main>
+
+    <!-- FORMULÁRIO -------------------------------------------------------------------------------------------------------------------------------- -->
+    <main class="mx-5 my-5 bg-light border">
+      <table id="table-client" class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Nome</th>
+            <th scope="col">Email</th>
+            <th scope="col">Celular</th>
+            <th scope="col">Cidade</th>
+            <th scope="col">Ação</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </main>
+
+    <!-- MODAL ------------------------------------------------------------------------------------------------------------------- -->
+    <section>
+      <div
+        class="modal fade"
+        id="exampleModal"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Editar Dados</h5>
+            </div>
+            <div class="modal-body">
+              <form id="form" class="p-2 row">
+                <div class="mb-3 col-12">
+                  <label for="nome" class="form-label">Nome Completo</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="editarNome"
+                    data-i="new"
+                    required
+                    disabled="true"
+                  />
+                </div>
+                <div class="mb-3 col-12">
+                  <label for="email" class="form-label">Email</label>
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="editarEmail"
+                    placeholder="nome@nome.com"
+                    required
+                    disabled="true"
+                    aria-describedby="emailHelp"
+                  />
+                </div>
+                <div class="mb-3 col-6">
+                  <label for="endereco" class="form-label">Endereço</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="editarEndereco"
+                    required
+                    disabled="true"
+                  />
+                </div>
+                <div class="mb-3 col-6">
+                  <label for="bairro" class="form-label">Bairro</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="editarBairro"
+                    required
+                    disabled="true"
+                  />
+                </div>
+                <div class="mb-3 col-6">
+                  <label for="cidade" class="form-label">Cidade</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="editarCidade"
+                    required
+                    disabled="true"
+                  />
+                </div>
+                <div class="mb-3 col-4">
+                  <label for="cep" class="form-label">CEP</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="editarCep"
+                    onkeypress="$(this).mask('00000-000')"
+                    required
+                    disabled="true"
+                  />
+                </div>
+                <div class="mb-3 col-2">
+                  <label for="uf" class="form-label">UF</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="editarUf"
+                    required
+                    disabled="true"
+                  />
+                </div>
+                <div class="mb-3 col-6">
+                  <label for="telefoneResidencial" class="form-label"
+                    >Telefone Residêncial</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="editarTelefoneResidencial"
+                    placeholder="(99) 9999-9999"
+                    onkeypress="$(this).mask('(00) 0000-0000')"
+                    required
+                    disabled="true"
+                  />
+                </div>
+                <div class="mb-3 col-6">
+                  <label for="telefoneCelular" class="form-label"
+                    >Telefone Celular</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="editarTelefoneCelular"
+                    placeholder="(99) 99999-9999"
+                    onkeypress="$(this).mask('(00) 00000-0000')"
+                    required
+                    disabled="true"
+                  />
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                SAIR
+              </button>
+              <button type="button" id="editModal" class="btn btn-primary">
+                EDITAR
+              </button>
+              <button
+                type="button"
+                id="saveModal"
+                style="
+                  display: none;
+                  background-color: #198754;
+                  border: #198754;
+                "
+                data-bs-dismiss="modal"
+                class="btn btn-primary"
+              >
+                SALVAR
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+      crossorigin="anonymous"
+    ></script>
+    <script src="./js/script.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
+  </body>
+</html>
